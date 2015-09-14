@@ -11,8 +11,6 @@ the average score of question is 36.29, and the the average score of answer is 4
 
 ![score_rep](https://cloud.githubusercontent.com/assets/8493530/9840610/f36d1b4e-5a62-11e5-8625-4f5661746537.png)
 
-Call:
-lm(formula = Rep ~ Score, data = rep_score)
 
 Residuals:
     Min      1Q  Median      3Q     Max 
@@ -22,8 +20,6 @@ Coefficients:
             Estimate Std. Error t value Pr(>|t|)    
 (Intercept)  4.34038    1.25821    3.45 0.000562 ***
 Score       10.17620    0.01208  842.34  < 2e-16 ***
----
-Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
 Residual standard error: 185.4 on 21980 degrees of freedom
 Multiple R-squared:   0.97,     Adjusted R-squared:   0.97 
@@ -31,7 +27,6 @@ F-statistic: 7.095e+05 on 1 and 21980 DF,  p-value: < 2.2e-16
 
         Pearson's product-moment correlation
 
-data:  rep_score$Rep and rep_score$Score
 t = 842.3347, df = 21980, p-value < 2.2e-16
 alternative hypothesis: true correlation is greater than 0
 95 percent confidence interval:
