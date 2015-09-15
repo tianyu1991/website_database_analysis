@@ -35,5 +35,12 @@ sample estimates:
       cor 
 0.9848617 
 
+Time needed to get answeres quickly.
+
+![creat_time_new](https://cloud.githubusercontent.com/assets/8493530/9888729/a064693a-5bc4-11e5-9706-51b46aa3776a.png)
+
+![anstime](https://cloud.githubusercontent.com/assets/8493530/9888727/a05ea252-5bc4-11e5-8a63-f2ac71ffa27e.png)
+
+![boxplot_time](https://cloud.githubusercontent.com/assets/8493530/9888728/a060c2c6-5bc4-11e5-8e7f-3f904392def6.png)
 
 
