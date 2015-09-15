@@ -1,56 +1,52 @@
-#1
 library(XML)
 library(plyr)
 library(ggplot2)
 library(RColorBrewer)
 library(dplyr)
+
+#"top10Tags
 tags = xmlParse("tags.xml") 
 tags_list =  t(xmlSApply(xmlRoot(tags), xmlAttrs)) 
-len<-length(tags_list)
-counts=rep(0,len)
-Tags=rep("0",len)
-for(i in 1:len){
-	counts[i]=tags_list[[i]]["Count"]
-	Tags[i]=tags_list[[i]]["TagName"]
+post_len<-length(tags_list)
+tags_data<-data.frame(count=rep(0,post_len),Tag=rep("0",post_len),stringsAsFactors=FALSE)
+for(i in 1:post_len){
+	tags_data[i,1]=as.numeric(tags_list[[i]]["Count"])
+	tags_data[i,2]=tags_list[[i]]["TagName"]
 }
+tags_data<-arrange(tags_data,desc(count))
+cols<-c(brewer.pal(7,"Set1"),brewer.pal(3,"Set2"))
 
-tags_data<-data.frame(count=as.numeric(counts),Tag=Tags)
-re<-arrange(tags_data,desc(count))
-sum(re$count)
-cols<-brewer.pal(10,"Set2")
 library(datasets)
 png(file = "top10Tags.png", width = 480, height = 480)
 par(las=2,mai=c(1.7,0.8,0.8,0.3))
-barplot(beside=TRUE, head(re$count/sum(re$count),10),names.arg=head(re$Tag,10),main="Top 10 popular tags",space=2,axisnames=TRUE,col=cols ,border="black")  
+barplot(beside=TRUE, head(tags_data$count/sum(tags_data$count),10),names.arg=head(tags_data$Tag,10),main="Top 10 popular tags",space=2,col=cols ,border="black")  
 title(ylab="percent") 
 dev.off()
 
+#post score and view
 
 posts = xmlParse("posts.xml") 
 posts_list =  t(xmlSApply(xmlRoot(posts), xmlAttrs))
-len<-length(posts_list)
-PostTypeIds=rep("0",len)
-Scores=rep("0",len)
-for(i in 1:len){
-	PostTypeIds[i]=posts_list[[i]]["PostTypeId"]
-	Scores[i]=posts_list[[i]]["Score"]
+post_len=length(posts_list)
+Post_data<-data.frame(PostTypeId=rep(0,post_len),Score=rep(0,post_len),Views=rep(0,post_len))
+for(i in 1:post_len){
+	Post_data[i,1]=posts_list[[i]]["PostTypeId"]
+	Post_data[i,2]=as.numeric(posts_list[[i]]["Score"])
+	Post_data[i,3]=as.numeric(posts_list[[i]]["ViewCount"])
 }
-Post_data<-data.frame(PostTypeId=PostTypeIds,Score=Scores)
 PostTypes<-data.frame(PostTypeId=c(1,2,3,4,5,6,7),PostTypes=c("Question","Answer","Orphaned tag wiki","Tag wiki excerpt","Tag wiki","Moderator nomination","Wiki placeholder"))
 Post_data2<-merge(Post_data,PostTypes,by="PostTypeId")
-cols<-brewer.pal(7,"Set3")
-par(las=2,mai=c(1.3,0.8,0.8,0.3))
-plot(Post_data2$PostTypes,col=cols ,border="black")  
+cols<-brewer.pal(7,"Set2")
 
 png(file = "PostTypes.png", width = 780, height = 480)
 qplot(PostTypes,data=Post_data2,main="histogram of post types")  
 dev.off()
-Post_data2$Score<-as.numeric(Post_data2$Score)
+
 png(file = "PostTypes.png", width = 780, height = 480)
 qplot(PostTypes,data=Post_data2,main="histogram of post types")  
 dev.off()
 
-png(file = "PostTypes_Score.png", width = 680, height = 480)
+png(file= "PostTypes_Score.png", width = 680, height = 480)
 qplot(Score,data=Post_data2,fill=PostTypes,main="Histogram of Score by Post Types")
 dev.off()
 
@@ -60,9 +56,16 @@ png(file = "PostTypes_Score2.png", width = 480, height = 480)
 boxplot(Score~PostTypes,data=Post_data3,main="Boxplot of Score of Question and Answer")
 dev.off()
 
+Post_data4<-subset(Post_data3,PostTypeId=="1")
+png(file = "PostTypes_Score3.png", width = 480, height = 480)
+qplot(Score,Views,data=Post_data4,geom=c("point","smooth"),method="lm",main="Scatter Plot of a Question's Score VS Viewcount")
+dev.off()
+
+#av_q <- mean(Post_data2$Score[Post_data2$PostTypeId == "1"])
+#av_a <- mean(Post_data2$Score[Post_data2$PostTypeId == "2"])
 
 
-
+#Score_Reputation
 idnum<-0
 for(i in 1:len){
 	if(!is.na(posts_list[[i]]["OwnerUserId"])) idnum<-idnum+1
@@ -104,3 +107,55 @@ dev.off()
 fit <- lm(Rep ~ Score, data=rep_score)
 cor.test( rep_score$Rep,rep_score$Score, method = "pearson", alternative = "greater")
 
+
+#Time to answer
+que_len=nrow(Post_data4)
+ans_len=nrow(Post_data3)-nrow(Post_data4)
+quesid<-data.frame(que_id=rep(0,que_len),creatt=rep("0",que_len),comc=rep(0,que_len),ans_id=rep(0,que_len),stringsAsFactors=FALSE)
+ansid<-data.frame(ans_id=rep(0,que_len),creatt=rep("0",que_len),comc=rep(0,que_len),stringsAsFactors=FALSE)
+q<-1
+a<-1
+
+for(i in 1:post_len){
+	if(posts_list[[i]]["PostTypeId"]==1) {
+		quesid[q,1]<-posts_list[[i]]["Id"]
+		quesid[q,2]<-posts_list[[i]]["CreationDate"]
+		quesid[q,3]<-posts_list[[i]]["CommentCount"]
+		quesid[q,4]<-posts_list[[i]]["AcceptedAnswerId"]
+		q<-q+1}
+	if(posts_list[[i]]["PostTypeId"]==2) {
+		ansid[a,1]<-posts_list[[i]]["Id"]
+		ansid[a,2]<-posts_list[[i]]["CreationDate"]
+		ansid[a,3]<-posts_list[[i]]["CommentCount"]
+		a<-a+1}
+}
+library(lubridate)
+quesid$creatt<-ymd_hms(postid$creatt)
+
+png(file = "creat_time_new.png", width = 480, height = 480)
+qplot(strftime(as.character(quesid$creatt), "%H"),main="Creation Time of Question",xlab="time")
+dev.off()
+
+quesid$comc<-as.numeric(quesid$com)
+hour<-strftime(as.character(quesid$creatt),"%H")
+quesid2<-cbind(quesid,hour)
+
+ansid$creatt<-ymd_hms(ansid$creatt)
+mergy_time<-merge(quesid2,ansid,by="ans_id",all = FALSE)
+time<-mergy_time$creatt.y-mergy_time$creatt.x
+mergy_time<-cbind(mergy_time,time)
+
+mergy_time2<-group_by(mergy_time,hour)
+mergy_time3<-summarize(mergy_time2,time=median(time,na.rm=TRUE))
+
+png(file = "anstime.png", width = 480, height = 480)
+qplot(hour,as.numeric(time),data=mergy_time3,main="Time needed to get acceptted answer", xlab="Creation Time of Question(hour)")
+dev.off()
+
+mergy_time4<-summarize(mergy_time2,time=mean(time,na.rm=TRUE))
+qplot(hour,as.numeric(time),data=mergy_time4)
+(max(mergy_time3$time)-min(mergy_time3$time))/60/60
+
+png(file = "boxplot_time.png", width = 1080, height = 480)
+boxplot(log(as.numeric(time))~hour,data=mergy_time,ylab="log(time)",xlab="Creation Time of Question(hour)",main="Time needed to get acceptted answer")
+dev.off()
