@@ -2,15 +2,26 @@
 explore information from website database (statistics overflow)
 
 
-#The top popular 10 tags in the website
+#Exploratory Data Analysis
+
+At first, I focused on some basic distribution of the database, the distribution of post tags and the distribution of the post type.
+
+
+The top popular 10 tags in the website
 
 
 ![top10tags](https://cloud.githubusercontent.com/assets/8493530/9840613/f370151a-5a62-11e5-9a81-242d6e6c2174.png)
 
-# the difference of scores of various types of posts
+the post type distribution
 
 
 ![posttypes](https://cloud.githubusercontent.com/assets/8493530/9840609/f36c1898-5a62-11e5-85ac-30e9e9287a3b.png)
+
+
+# the difference of scores of various types of posts
+
+
+
 ![posttypes_score](https://cloud.githubusercontent.com/assets/8493530/9840611/f36e671a-5a62-11e5-9a3d-6e9eb871c05e.png)
 ![posttypes_score2](https://cloud.githubusercontent.com/assets/8493530/9840612/f36f31ae-5a62-11e5-8512-b3247714ad9d.png)
 
