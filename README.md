@@ -2,14 +2,23 @@
 explore information from website database (statistics overflow)
 
 
-The top popular 10 tags in the website
+#The top popular 10 tags in the website
+
+
 ![top10tags](https://cloud.githubusercontent.com/assets/8493530/9840613/f370151a-5a62-11e5-9a81-242d6e6c2174.png)
+
+# the difference of scores of various types of posts
+
 
 ![posttypes](https://cloud.githubusercontent.com/assets/8493530/9840609/f36c1898-5a62-11e5-85ac-30e9e9287a3b.png)
 ![posttypes_score](https://cloud.githubusercontent.com/assets/8493530/9840611/f36e671a-5a62-11e5-9a3d-6e9eb871c05e.png)
 ![posttypes_score2](https://cloud.githubusercontent.com/assets/8493530/9840612/f36f31ae-5a62-11e5-8512-b3247714ad9d.png)
 
 the average score of question is 36.29, and the the average score of answer is 41.57, 5.28 higher than the average of question's score.   
+
+
+#the relation of a user's reputation and his total score from all the posts
+
 
 ![score_rep](https://cloud.githubusercontent.com/assets/8493530/9840610/f36d1b4e-5a62-11e5-8625-4f5661746537.png)
 
@@ -37,7 +46,10 @@ sample estimates:
       cor 
 0.9848617 
 
-Time needed to get answeres quickly.
+
+
+#Time needed to get answeres quickly.
+
 
 ![creat_time_new](https://cloud.githubusercontent.com/assets/8493530/9888729/a064693a-5bc4-11e5-9706-51b46aa3776a.png)
 
