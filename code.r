@@ -42,10 +42,6 @@ png(file = "PostTypes.png", width = 780, height = 480)
 qplot(PostTypes,data=Post_data2,main="histogram of post types")  
 dev.off()
 
-png(file = "PostTypes.png", width = 780, height = 480)
-qplot(PostTypes,data=Post_data2,main="histogram of post types")  
-dev.off()
-
 png(file= "PostTypes_Score.png", width = 680, height = 480)
 qplot(Score,data=Post_data2,fill=PostTypes,main="Histogram of Score by Post Types")
 dev.off()
@@ -60,9 +56,6 @@ Post_data4<-subset(Post_data3,PostTypeId=="1")
 png(file = "PostTypes_Score3.png", width = 480, height = 480)
 qplot(Score,Views,data=Post_data4,geom=c("point","smooth"),method="lm",main="Scatter Plot of a Question's Score VS Viewcount")
 dev.off()
-
-#av_q <- mean(Post_data2$Score[Post_data2$PostTypeId == "1"])
-#av_a <- mean(Post_data2$Score[Post_data2$PostTypeId == "2"])
 
 
 #Score_Reputation
@@ -130,10 +123,10 @@ for(i in 1:post_len){
 		a<-a+1}
 }
 library(lubridate)
-quesid$creatt<-ymd_hms(postid$creatt)
+quesid$creatt<-ymd_hms(quesid$creatt)
 
 png(file = "creat_time_new.png", width = 480, height = 480)
-qplot(strftime(as.character(quesid$creatt), "%H"),main="Creation Time of Question",xlab="time")
+qplot(strftime(quesid$creatt, "%H"),main="Creation Time of Question",xlab="time")
 dev.off()
 
 quesid$comc<-as.numeric(quesid$com)
