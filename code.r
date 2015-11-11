@@ -149,7 +149,7 @@ mergy_time2<-group_by(mergy_time,hour)
 mergy_time3<-summarize(mergy_time2,time=median(time,na.rm=TRUE))
 
 png(file = "anstime.png", width = 480, height = 480)
-qplot(hour,as.numeric(time),data=mergy_time3,main="Time needed to get acceptted answer", xlab="Creation Time of Question(hour)")
+qplot(hour,as.numeric(time),data=mergy_time3,main="Time needed to get accepted answer", xlab="Creation Time of Question(hour)")
 dev.off()
 
 mergy_time4<-summarize(mergy_time2,time=mean(time,na.rm=TRUE))
@@ -157,5 +157,5 @@ qplot(hour,as.numeric(time),data=mergy_time4)
 (max(mergy_time3$time)-min(mergy_time3$time))/60/60
 
 png(file = "boxplot_time.png", width = 1080, height = 480)
-boxplot(log(as.numeric(time))~hour,data=mergy_time,ylab="log(time)",xlab="Creation Time of Question(hour)",main="Time needed to get acceptted answer")
+boxplot(log(as.numeric(time))~hour,data=mergy_time,ylab="log(time)",xlab="Creation Time of Question(hour)",main="Time needed to get accepted answer")
 dev.off()
